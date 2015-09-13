@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Data.Entities
@@ -8,9 +8,9 @@ namespace Blog.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        [Required]
         [StringLength(250)]
         public string Descricao { get; set; }
-                
+
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

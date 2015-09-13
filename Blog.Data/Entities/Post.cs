@@ -1,5 +1,5 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,5 +27,6 @@ namespace Blog.Data.Entities
         [ForeignKey("UsuarioId")]
         public virtual Usuario Usuario { get; set; }
 
+        public virtual ICollection<Tag> Tags { get; set; }
     }
 }

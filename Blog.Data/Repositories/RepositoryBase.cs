@@ -11,44 +11,44 @@ namespace Blog.Data.Repositories
     {
         public void Insert(TEntity obj)
         {
-            using (var d = new BlogContext())
+            using (var Context = new BlogContext())
             {
-                d.Entry(obj).State = EntityState.Added;
-                d.SaveChanges();
+                Context.Entry(obj).State = EntityState.Added;
+                Context.SaveChanges();
             }
         }
 
         public void Delete(TEntity obj)
         {
-            using (var d = new BlogContext())
+            using (var Context = new BlogContext())
             {
-                d.Entry(obj).State = EntityState.Deleted;
-                d.SaveChanges();
+                Context.Entry(obj).State = EntityState.Deleted;
+                Context.SaveChanges();
             }
         }
 
         public void Update(TEntity obj)
         {
-            using (var d = new BlogContext())
+            using (var Context = new BlogContext())
             {
-                d.Entry(obj).State = EntityState.Modified;
-                d.SaveChanges();
+                Context.Entry(obj).State = EntityState.Modified;
+                Context.SaveChanges();
             }
         }
 
         public ICollection<TEntity> GetAll()
         {
-            using (var d = new BlogContext())
+            using (var Context = new BlogContext())
             {
-                return d.Set<TEntity>().ToList();
+                return Context.Set<TEntity>().ToList();
             }
         }
 
         public TEntity GetById(int id)
         {
-            using (var d = new BlogContext())
+            using (var Context = new BlogContext())
             {
-                return d.Set<TEntity>().Find(id);
+                return Context.Set<TEntity>().Find(id);
             }
         }
         

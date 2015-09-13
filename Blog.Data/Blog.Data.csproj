@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataSource\BlogContext.cs" />
+    <Compile Include="Dto\PostDto.cs" />
     <Compile Include="Entities\Perfil.cs" />
     <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\Tag.cs" />
@@ -56,6 +57,14 @@
     <Compile Include="Migrations\201509112311206_Initial.cs" />
     <Compile Include="Migrations\201509112311206_Initial.Designer.cs">
       <DependentUpon>201509112311206_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509122202374_relationamentopostxtag.cs" />
+    <Compile Include="Migrations\201509122202374_relationamentopostxtag.Designer.cs">
+      <DependentUpon>201509122202374_relationamentopostxtag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509130144045_tag-descricao-required-removida.cs" />
+    <Compile Include="Migrations\201509130144045_tag-descricao-required-removida.Designer.cs">
+      <DependentUpon>201509130144045_tag-descricao-required-removida.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +77,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201509112311206_Initial.resx">
       <DependentUpon>201509112311206_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509122202374_relationamentopostxtag.resx">
+      <DependentUpon>201509122202374_relationamentopostxtag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509130144045_tag-descricao-required-removida.resx">
+      <DependentUpon>201509130144045_tag-descricao-required-removida.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
