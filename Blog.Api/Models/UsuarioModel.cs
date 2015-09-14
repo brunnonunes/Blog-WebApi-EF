@@ -1,10 +1,13 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace Blog.Api.Models
 {
-    public class UsuarioModelConsulta
+    public class UsuarioModelLogin
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "Informe o login de acesso.")]
         public string Login { get; set; }
+
+        [Required(ErrorMessage = "Informe a senha de acesso.")]
         public string Senha { get; set; }
     }
 }

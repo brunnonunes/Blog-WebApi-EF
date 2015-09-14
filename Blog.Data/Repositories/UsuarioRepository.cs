@@ -8,16 +8,12 @@ namespace Blog.Data.Repositories
 {
     public class UsuarioRepository : RepositoryBase<Usuario>
     {
-
-        public ICollection<Usuario> BuscarPorLogin(string login)
+        public Usuario Authenticate(string Login, string Senha)
         {
-
-            using (var d = new BlogContext())
+            using (var Context = new BlogContext())
             {
-                return d.Usuario.Where(u => u.Login.Contains(login)).OrderBy(u => u.Login).ToList();
+                return Context.Usuario.FirstOrDefault(u => u.Login.Equals(Login) & u.Senha.Equals(Senha));
             }
-
         }
-
     }
 }

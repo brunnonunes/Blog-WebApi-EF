@@ -14,7 +14,7 @@ namespace Blog.Api.Controllers
     [RoutePrefix("Blog/Post")]
     public class PostController : ApiController
     {
-        [Route("GetAllFull")]
+        [Route("GetAll"), HttpGet]
         public ICollection<PostModelGet> GetAllFull()
         {
             try
@@ -47,43 +47,30 @@ namespace Blog.Api.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("Insert")]
+        [Route("Insert"), HttpPost]
         public HttpResponseMessage Insert(PostModelInsert model)
         {
             try
             {
                 if (ModelState.IsValid && model != null)
                 {
-                    //var TagList = new List<Tag>();
-
-                    //var NovaTag = new Tag
-                    //{
-                    //    Descricao = "Beleza"
-                    //};
-
-
-                    //var TagList = new List<Tag>();
-
-                    //var NovaTag = new Tag
-                    //{
-                    //    Id = 1
-                    //};
-
-                    //TagList.Add(NovaTag);                
-
+                    var TagList = new List<Tag>();
+                    var NovaTag = new Tag
+                    {
+                        Id = 2
+                    };
+                    TagList.Add(NovaTag);
 
                     var Post = new Post();
-                                        
+
                     Post.Titulo = model.Titulo;
                     Post.Corpo = model.Corpo;
-                    Post.DataCriacao = model.DataCriacao;
                     Post.UsuarioId = model.UsuarioId;
-                    //Post.Tags = TagList;
+                    Post.Tags = TagList;
 
                     var PostRepository = new PostRepository();
 
-                    PostRepository.Insert(Post);                    
+                    PostRepository.InsertWithTags(Post);
 
                     return Request.CreateResponse(HttpStatusCode.OK, "Post inserido com sucesso.");
                 }

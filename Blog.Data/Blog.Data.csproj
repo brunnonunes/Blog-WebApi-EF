@@ -54,17 +54,17 @@
     <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Interfaces\IRepositoryBase.cs" />
-    <Compile Include="Migrations\201509112311206_Initial.cs" />
-    <Compile Include="Migrations\201509112311206_Initial.Designer.cs">
-      <DependentUpon>201509112311206_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201509131611380_virtualproperties.cs" />
+    <Compile Include="Migrations\201509131611380_virtualproperties.Designer.cs">
+      <DependentUpon>201509131611380_virtualproperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509122202374_relationamentopostxtag.cs" />
-    <Compile Include="Migrations\201509122202374_relationamentopostxtag.Designer.cs">
-      <DependentUpon>201509122202374_relationamentopostxtag.cs</DependentUpon>
+    <Compile Include="Migrations\201509131613544_virtualproperties1.cs" />
+    <Compile Include="Migrations\201509131613544_virtualproperties1.Designer.cs">
+      <DependentUpon>201509131613544_virtualproperties1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509130144045_tag-descricao-required-removida.cs" />
-    <Compile Include="Migrations\201509130144045_tag-descricao-required-removida.Designer.cs">
-      <DependentUpon>201509130144045_tag-descricao-required-removida.cs</DependentUpon>
+    <Compile Include="Migrations\201509131636466_tagdescricaoisunique.cs" />
+    <Compile Include="Migrations\201509131636466_tagdescricaoisunique.Designer.cs">
+      <DependentUpon>201509131636466_tagdescricaoisunique.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,19 +75,19 @@
     <Compile Include="Repositories\UsuarioRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509112311206_Initial.resx">
-      <DependentUpon>201509112311206_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509122202374_relationamentopostxtag.resx">
-      <DependentUpon>201509122202374_relationamentopostxtag.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509130144045_tag-descricao-required-removida.resx">
-      <DependentUpon>201509130144045_tag-descricao-required-removida.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201509131611380_virtualproperties.resx">
+      <DependentUpon>201509131611380_virtualproperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509131613544_virtualproperties1.resx">
+      <DependentUpon>201509131613544_virtualproperties1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509131636466_tagdescricaoisunique.resx">
+      <DependentUpon>201509131636466_tagdescricaoisunique.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

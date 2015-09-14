@@ -7,7 +7,7 @@ namespace Blog.Data.Entities
 {
     public class Post
     {
-        [Key]
+        [Key]        
         public int Id { get; set; }
 
         [Required]

@@ -24,9 +24,7 @@ namespace Blog.Api.Models
         public string Titulo { get; set; }
         [Required]
         public string Corpo { get; set; }
-        [Required]
-        public DateTime DataCriacao { get; set; }
-
+     
         [Required]
         public int UsuarioId { get; set; }
     }
