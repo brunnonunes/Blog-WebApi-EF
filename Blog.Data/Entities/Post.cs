@@ -12,20 +12,20 @@ namespace Blog.Data.Entities
 
         [Required]
         [StringLength(250)]
-        public string Titulo { get; set; }
+        public string Title { get; set; }
 
         [StringLength(1000)]
-        public string Corpo { get; set; }
+        public string Content { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime DataCriacao { get; set; }
+        public DateTime CreationDate { get; set; }
 
         [Required]
-        public int UsuarioId { get; set; }
+        public int UserId { get; set; }
 
-        [ForeignKey("UsuarioId")]
-        public virtual Usuario Usuario { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
 
         public virtual ICollection<Tag> Tags { get; set; }
     }

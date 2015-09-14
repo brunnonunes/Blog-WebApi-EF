@@ -29,7 +29,7 @@ namespace Blog.Data.Repositories
                             new Tag()
                             {
                                 Id = t.Id,
-                                Descricao = t.Descricao
+                                Description = t.Description
                             }
                         );
                     }
@@ -38,11 +38,11 @@ namespace Blog.Data.Repositories
                         new PostDto()
                         {
                             Id = p.Id,
-                            Titulo = p.Titulo,
-                            Corpo = p.Corpo,
-                            DataCriacao = p.DataCriacao,
-                            UsarioId = p.UsuarioId,
-                            UsuarioLogin = p.Usuario.Login,
+                            Title = p.Title,
+                            Content = p.Content,
+                            CreationDate = p.CreationDate,
+                            UserId = p.UserId,
+                            UserLogin = p.User.Login,
                             Tags = TagList
                         }
                     );
@@ -67,10 +67,10 @@ namespace Blog.Data.Repositories
 
                 var NewPost = new Post
                 {
-                    Titulo = post.Titulo,
-                    Corpo = post.Corpo,
-                    DataCriacao = DateTime.Now,
-                    UsuarioId = post.UsuarioId,
+                    Title = post.Title,
+                    Content = post.Content,
+                    CreationDate = DateTime.Now,
+                    UserId = post.UserId,
                     Tags = ListTag
                 };
 

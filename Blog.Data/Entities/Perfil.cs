@@ -10,7 +10,7 @@ namespace Blog.Data.Entities
 
         [Required]
         [StringLength(250)]
-        public string Descricao { get; set; }
+        public string Description { get; set; }
         
     }
 }

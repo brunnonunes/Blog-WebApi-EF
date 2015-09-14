@@ -29,11 +29,11 @@ namespace Blog.Api.Controllers
                            new PostModelGet()
                            {
                                Id = p.Id,
-                               Titulo = p.Titulo,
-                               Corpo = p.Corpo,
-                               DataCriacao = p.DataCriacao,
-                               UsarioId = p.UsarioId,
-                               UsuarioLogin = p.UsuarioLogin,
+                               Title = p.Title,
+                               Content = p.Content,
+                               CreationDate = p.CreationDate,
+                               UserId = p.UserId,
+                               UserLogin = p.UserLogin,
                                Tags = p.Tags
                            }
                         );
@@ -63,9 +63,9 @@ namespace Blog.Api.Controllers
 
                     var Post = new Post();
 
-                    Post.Titulo = model.Titulo;
-                    Post.Corpo = model.Corpo;
-                    Post.UsuarioId = model.UsuarioId;
+                    Post.Title = model.Title;
+                    Post.Content = model.Content;
+                    Post.UserId = model.UserId;
                     Post.Tags = TagList;
 
                     var PostRepository = new PostRepository();

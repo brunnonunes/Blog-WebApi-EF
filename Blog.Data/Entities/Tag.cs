@@ -11,7 +11,7 @@ namespace Blog.Data.Entities
 
         [Index(IsUnique = true)]
         [StringLength(250)]
-        public string Descricao { get; set; }
+        public string Description { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
     }

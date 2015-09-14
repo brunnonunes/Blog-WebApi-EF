@@ -6,13 +6,13 @@ using Blog.Data.Entities;
 
 namespace Blog.Data.Repositories
 {
-    public class UsuarioRepository : RepositoryBase<Usuario>
+    public class UserRepository : RepositoryBase<User>
     {
-        public Usuario Authenticate(string Login, string Senha)
+        public User Authenticate(string Login, string Password)
         {
             using (var Context = new BlogContext())
             {
-                return Context.Usuario.FirstOrDefault(u => u.Login.Equals(Login) & u.Senha.Equals(Senha));
+                return Context.User.FirstOrDefault(u => u.Login.Equals(Login) & u.Password.Equals(Password));
             }
         }
     }

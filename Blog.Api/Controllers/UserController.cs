@@ -7,24 +7,24 @@ using System.Web.Security;
 namespace Blog.Api.Controllers
 {
     [Authorize]
-    [RoutePrefix("Blog/Usuario")]
-    public class UsuarioController : ApiController
+    [RoutePrefix("Blog/User")]
+    public class UserController : ApiController
     {
         [Route("Login"), HttpPost, AllowAnonymous]
-        public bool Login(UsuarioModelLogin model)
+        public bool Login(UserModelLogin model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var UsuarioRepository = new UsuarioRepository();
+                    var UserRepository = new UserRepository();
 
-                    var Usuario = UsuarioRepository.Authenticate(model.Login, Cryptography.GetMD5Hash(model.Senha));
+                    var User = UserRepository.Authenticate(model.Login, Cryptography.GetMD5Hash(model.Password));
 
-                    if (Usuario != null)
+                    if (User != null)
                     {
                         //Gerando um Ticket de Acesso para o usuario.
-                        FormsAuthentication.SetAuthCookie(Usuario.Login, false);
+                        FormsAuthentication.SetAuthCookie(User.Login, false);
 
                         return true;
                     }
@@ -40,9 +40,9 @@ namespace Blog.Api.Controllers
         }
 
         //[Route("Login"), HttpPost, AllowAnonymous]
-        //public string Login(UsuarioModelLogin model)
+        //public string Login(UserModelLogin model)
         //{
-        //    if (model.Login.Equals("brunno") && model.Senha.Equals("123"))
+        //    if (model.Login.Equals("brunno") && model.Password.Equals("123"))
         //    {
         //        //Gerando um Ticket de Acesso para o usuario.
         //        FormsAuthentication.SetAuthCookie(model.Login, false);
