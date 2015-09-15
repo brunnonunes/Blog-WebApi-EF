@@ -25,7 +25,7 @@ namespace Blog.Data.Repositories
                 Context.Entry(obj).State = EntityState.Deleted;
                 Context.SaveChanges();
             }
-        }
+        }           
 
         public void Update(TEntity obj)
         {
@@ -51,6 +51,6 @@ namespace Blog.Data.Repositories
                 return Context.Set<TEntity>().Find(id);
             }
         }
-        
+
     }
 }

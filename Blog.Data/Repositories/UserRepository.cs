@@ -12,7 +12,7 @@ namespace Blog.Data.Repositories
         {
             using (var Context = new BlogContext())
             {
-                return Context.User.FirstOrDefault(u => u.Login.Equals(Login) & u.Password.Equals(Password));
+                return Context.User.Include("Perfil").FirstOrDefault(u => u.Login.Equals(Login) & u.Password.Equals(Password));
             }
         }
     }

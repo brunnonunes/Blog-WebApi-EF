@@ -5,7 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Api.Models
 {
-    public class PostModelGet
+    // Envia os dados do post para o cliente.
+    public class PostModelGetAllPosts
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -18,14 +19,11 @@ namespace Blog.Api.Models
         public ICollection<Tag> Tags { get; set; }
     }
 
+    // Envia os dados para gravar um novo post.
     public class PostModelInsert
-    {        
-        [Required]
+    {
         public string Title { get; set; }
-        [Required]
         public string Content { get; set; }
-     
-        [Required]
         public int UserId { get; set; }
     }
 }

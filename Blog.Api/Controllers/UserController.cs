@@ -10,57 +10,50 @@ namespace Blog.Api.Controllers
     [RoutePrefix("Blog/User")]
     public class UserController : ApiController
     {
-        [Route("Login"), HttpPost, AllowAnonymous]
-        public bool Login(UserModelLogin model)
+        [Route("Login"), HttpGet, AllowAnonymous]
+        public UserModelLogin Login([FromUri]UserModelLogin model)
         {
+            var UserModelLogin = new UserModelLogin();
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     var UserRepository = new UserRepository();
 
-                    var User = UserRepository.Authenticate(model.Login, Cryptography.GetMD5Hash(model.Password));
-
+                    //var User = UserRepository.Authenticate(model.Login, Cryptography.GetMD5Hash(model.Password));
+                    var User = UserRepository.Authenticate(model.Login, model.Password);
+                                       
                     if (User != null)
                     {
-                        //Gerando um Ticket de Acesso para o usuario.
+                        //Gerando um Ticket de Acesso para o usuário.
                         FormsAuthentication.SetAuthCookie(User.Login, false);
 
-                        return true;
-                    }
+                        UserModelLogin.Id = User.Id;
+                        UserModelLogin.Login = User.Login;
+                        UserModelLogin.PerfilId = User.PerfilId; 
+                        UserModelLogin.LoginStatusMessage = "Login realizado com sucesso!";
 
+                        return UserModelLogin;
+                    }
+                    else
+                    {
+                        UserModelLogin.LoginStatusMessage = ("Cadastro não encontrado.");
+
+                        return UserModelLogin;
+                    }
                 }
                 catch
                 {
-                    return false;
+                    UserModelLogin.LoginStatusMessage = ("Erro, não foi possível realizar o login.");
+
+                    return UserModelLogin;
                 }
             }
 
-            return false;
+            UserModelLogin.LoginStatusMessage = ("Insira login e senha.");
+
+            return UserModelLogin;
         }
-
-        //[Route("Login"), HttpPost, AllowAnonymous]
-        //public string Login(UserModelLogin model)
-        //{
-        //    if (model.Login.Equals("brunno") && model.Password.Equals("123"))
-        //    {
-        //        //Gerando um Ticket de Acesso para o usuario.
-        //        FormsAuthentication.SetAuthCookie(model.Login, false);
-
-        //        return "Logou!";
-        //    }
-        //    else
-        //    {
-        //        return "Errou!!";
-        //    }
-
-        //}
-
-        //[Route("EstouLogado"), HttpGet]
-        //public string EstouLogado()
-        //{
-        //    return "Sim!";
-        //}
-
     }
 }

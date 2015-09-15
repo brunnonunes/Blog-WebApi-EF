@@ -11,11 +11,11 @@ namespace Blog.Data.Repositories
     public class PostRepository : RepositoryBase<Post>
     {
         // Método que retorna todos os posts e suas respectivas tags.
-        public List<PostDto> GetAllFull()
+        public List<PostDto> GetAllPosts()
         {
             using (var Context = new BlogContext())
             {
-                var query = Context.Post.ToList();
+                var query = Context.Post.ToList().OrderByDescending(p => p.CreationDate);
 
                 var PostDtoList = new List<PostDto>();
 
@@ -54,18 +54,18 @@ namespace Blog.Data.Repositories
         }
 
         // Método que insere o novo post na base juntamente com sua coleção de tags.
-        public void InsertWithTags(Post post)
+        public void InsertPost(Post post)
         {
             using (var Context = new BlogContext())
             {
                 var ListTag = new List<Tag>();
-                
+
                 foreach (Tag t in post.Tags)
                 {
                     ListTag.Add(Context.Tag.FirstOrDefault(tag => tag.Id == t.Id));
                 };
 
-                var NewPost = new Post
+                var Post = new Post
                 {
                     Title = post.Title,
                     Content = post.Content,
@@ -74,8 +74,21 @@ namespace Blog.Data.Repositories
                     Tags = ListTag
                 };
 
-                Context.Entry(NewPost).State = EntityState.Added;
+                Context.Entry(Post).State = EntityState.Added;
                 Context.SaveChanges();
+            }
+        }
+
+        public void DeletePost(int postId)
+        {
+            using (var Context = new BlogContext())
+            {
+                var Post = new Post();
+                
+                Post = Context.Post.Include("Tags").FirstOrDefault(p => p.Id == postId);
+                
+                Context.Entry(Post).State = EntityState.Deleted;
+                Context.SaveChanges();               
             }
         }
     }

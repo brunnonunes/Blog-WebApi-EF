@@ -1,5 +1,7 @@
 ﻿<!DOCTYPE html>
+
 <html ng-app="blog" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
 
     <title>Blog</title>
@@ -9,13 +11,12 @@
     <style>
         .jumbotron {
             text-align: center;
-            /*color: white;*/
-            /*background-color: #0386e4;*/
-            margin-top: 50px;
+            color: #62bdff;
+            background-color: #0064ac;
         }
 
         .container {
-            margin-left: auto;            
+            margin-left: auto;
             margin-right: auto;
             width: 800px;
         }
@@ -26,6 +27,34 @@
             color: gray;
         }
 
+        #LoginLabel {
+            color: gray;
+            font-size: 14px;
+            font-family: Calibri;
+            margin-top: 12px;
+        }
+
+        #LoginStatusMessageLabel {
+            color: gray;
+            font-size: 14px;
+            font-family: Calibri;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        #GetFailMessageLabel {
+            color: gray;
+            font-size: 14px;
+            font-family: Calibri;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        #TableLogin {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: -31px;
+        }
     </style>
 
     <script src="Scripts/angular.js"></script>
@@ -34,6 +63,19 @@
         angular.module("blog", []);
         angular.module("blog").controller("blogController", function ($scope, $http) {
 
+            // Variável para armazenar o Id do usuário ativo.
+            var USER_ID = '';
+
+
+            // Esconder Elementos da UI.
+            $scope.HideLoginLabel = true;
+            $scope.HideLoginStatusMessageLabel = true;
+            $scope.HideGetFailMessageLabel = true;
+            $scope.HideFormNewPost = true;
+            $scope.HideDivExcluirPost = true;
+
+
+            // Buscando todos os posts gravados.
             $http.get("http://localhost:41393/blog/post/getall")
                 .success(
                 function (data) {
@@ -45,94 +87,256 @@
                     $scope.mensagem = e;
                 }
                 );
+
+
+            // Objeto JSON para resgatar os campos login e senha do usuário.
+            $scope.Model = {
+                Login: '', Password: ''
+            };
+
+            // Efetuando o login do usuário.
+            $scope.login = function () {
+                $http.get("http://localhost:41393/blog/user/login?login=" + $scope.Model.Login + "&password=" + $scope.Model.Password)
+                .success(
+                function (data) {
+
+                    if (data.Login != null) {
+                        $scope.userdata = data
+                        alert(data.LoginStatusMessage);
+
+                        // Armazenando Id do usuário ativo.
+                        USER_ID = data.Id;
+
+                        // Verificando Perfil: 1 = Admin, 2 = Público.
+                        if (data.PerfilId == 1) {
+                            
+                            // Funcionalidade de exclusão de posts.
+                            $scope.HideDivExcluirPost = false;
+                        }
+                        else {
+                            $scope.HideDivExcluirPost = true;
+                        }
+
+                        $scope.loginClear();
+
+                        $scope.HideFormNewPost = false;
+                        $scope.HideLoginLabel = false;
+                        $scope.HideLoginStatusMessageLabel = true;
+                        $scope.HideGetFailMessageLabel = true;
+
+                        $scope.HideTableLogin = true;
+                    }
+                    else {
+                        $scope.userdata = data
+                        $scope.loginClear();
+
+                        $scope.HideLoginLabel = true;
+                        $scope.HideLoginStatusMessageLabel = false;
+                        $scope.HideGetFailMessageLabel = true;
+                    }
+
+                }
+                )
+                .error(
+                function (e) {
+                    $scope.GetFailMessage = e;
+
+                    $scope.HideLoginLabel = true;
+                    $scope.HideLoginStatusMessageLabel = true;
+                    $scope.HideGetFailMessageLabel = false;
+                }
+                );
+            };
+
+            // Limpeza dos campos de login.
+            $scope.loginClear = function () {
+                $scope.Model.Login = '';
+                $scope.Model.Password = '';
+            }
+
+
+            // Criando um objeto JSON para fazer o envio dos dados do post.
+            $scope.Model = {
+                Title: '', Content: '', UserId: ''
+            };
+
+            // Gravando um novo post.
+            $scope.post = function () {
+
+                $scope.Model.UserId = USER_ID
+
+                $http.post("http://localhost:41393/blog/post/Insert", $scope.Model)
+                .success(
+                function (msg) {
+                    alert(msg);
+                    $scope.postClear();
+
+                    // Buscando todos os posts gravados.
+                    $http.get("http://localhost:41393/blog/post/getall")
+                        .success(
+                        function (data) {
+                            $scope.posts = data;
+                        }
+                        )
+                        .error(
+                        function (e) {
+                            $scope.mensagem = e;
+                        }
+                        );
+                }
+                )
+                .error(
+                function (e) {
+                    $scope.GetFailMessage = e;
+                }
+                );
+            };
+
+            // Limpeza dos campos do post.
+            $scope.postClear = function () {
+                $scope.Model.Title = '';
+                $scope.Model.Content = '';
+            }
+
+
+            // Excluindo um post.
+            $scope.delete = function (post) {
+                $http.get("http://localhost:41393/blog/post/Delete?PostId=" + post.Id)
+                .success(
+                function (msg) {
+                    alert(msg);
+
+                    // Buscando todos os posts gravados.
+                    $http.get("http://localhost:41393/blog/post/getall")
+                        .success(
+                        function (data) {
+                            $scope.posts = data;
+                        }
+                        )
+                        .error(
+                        function (e) {
+                            $scope.mensagem = e;
+                        }
+                        );
+                }
+                )
+                .error(
+                function (e) {
+                    $scope.GetFailMessage = e;
+                }
+                );
+            };
+
         });
+
     </script>
 
 </head>
 
 <body ng-controller="blogController">
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="jumbotron">
+        <h1>Blog</h1>
+    </div>
+
+    <nav class="navbar" id="nav-login">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!--<a class="navbar-brand" href="#">blog</a>-->
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <form class="navbar-form navbar-right">
-                    <div class="form-group">
-                        <input placeholder="Login" class="form-control" type="text">
-                    </div>
-                    <div class="form-group">
-                        <input placeholder="Password" class="form-control" type="password">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Entrar</button>
-                </form>
-            </div><!--/.navbar-collapse -->
+
+            <table id="TableLogin" class="well" ng-hide="HideTableLogin">
+
+                <tr>
+                    <td>
+                        <div>
+                            <form class="navbar-form">
+
+                                <div class="form-group">
+                                    <input placeholder="Login" class="form-control" type="text" ng-model="Model.Login">
+                                </div>
+
+                                <div class="form-group">
+                                    <input placeholder="Password" class="form-control" type="password" ng-model="Model.Password">
+                                </div>
+
+                                <!--<input type="button" class="btn btn-primary" ng-click="login()" value="Entrar" />-->
+                                <button type="submit" class="btn btn-primary" ng-click="login()">Entrar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div>
+                            <p id="LoginStatusMessageLabel" class="form-inline" ng-hide="HideLoginStatusMessageLabel"> {{userdata.LoginStatusMessage}}</p>
+                            <p id="GetFailMessageLabel" class="form-inline" ng-hide="HideGetFailMessageLabel">{{GetFailMessage}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </nav>
 
-    <div class="jumbotron">
+    <div class="well container" ng-hide="HideFormNewPost">
 
-        <h2>Blog</h2>
+        <p id="LoginLabel" class="form-inline" ng-hide="HideLoginLabel">Usuário(a): {{userdata.Login}}</p>
+
+        <h3>Criar Novo Post</h3>
+
+        <form role="form">
+
+            <div class="form-group">
+                <label for="Título">Título</label>
+                <input type="text" class="form-control" ng-model="Model.Title" />
+            </div>
+
+            <div class="form-group">
+                <label for="Conteúdo">Conteúdo</label>
+                <input type="text" class="form-control" ng-model="Model.Content" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-click="post()">Postar</button>
+
+        </form>
 
     </div>
 
     <div class="row container">
-
         <div class="col-md-12">
-
             <table class="table table-striped">
-
                 <thead>
-
-                    <tr>
-                        <!--<th>Tópicos</th>-->
-                    </tr>
-
                 </thead>
-
                 <tbody>
-
-                    <tr ng-repeat="p in posts">
-
+                    <tr ng-repeat="post in posts">
                         <td>
-                            <table>
-                                <tr>
-                                    <td><p class="form-inline">Por {{p.UserLogin}} às {{p.CreationDate | date : 'H:mm'}}</p></td>
-                                    <td><p class="form-inline">{{p.CreationDate | date : 'dd/MM/yy'}}</p></td>
-                                </tr>
 
-                                <tr>
-                                    <td>
-                                        <blockquote>
-                                            <h2><strong>{{p.Title}}</strong></h2>
-                                            <h4>{{p.Content}}</h4>
-                                        </blockquote>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>                      
+                            <div class="col-md-11">
+                                <p class="form-inline">Por {{post.UserLogin}} às {{post.CreationDate | date : 'H:mm'}} em {{post.CreationDate | date : 'dd/MM/yy'}}</p>
+                            </div>
 
+                            <div class="col-md-1" ng-hide="HideDivExcluirPost">
+                                <button type="submit" class="btn btn-danger" ng-click="delete(post)">
+                                    <span class="glyphicon glyphicon-remove" />
+                                </button>
+                            </div>
+
+                            <div class="col-md-11">
+                                <h4><strong>{{post.Title}}</strong></h4>
+
+                                <h5>{{post.Content}}</h5>
+                            </div>
+
+                            <div>
+
+                            </div>
+                        </td>
                     </tr>
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
 
 </body>
 
 </html>
-
-
-
-
