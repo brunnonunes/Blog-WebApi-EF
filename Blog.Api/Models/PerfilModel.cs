@@ -1,5 +1,4 @@
-﻿
-namespace Blog.Api.Models
+﻿namespace Blog.Api.Models
 {
     public class PerfilModel
     {

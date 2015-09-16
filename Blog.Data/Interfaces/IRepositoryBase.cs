@@ -9,7 +9,6 @@ namespace Blog.Data.Interfaces
         void Delete(TEntity obj);
         void Update(TEntity obj);
         ICollection<TEntity> GetAll();
-        TEntity GetById(int id);
-        
+        TEntity GetById(int id);        
     }
 }

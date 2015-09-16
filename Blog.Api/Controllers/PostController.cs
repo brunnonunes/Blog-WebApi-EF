@@ -7,6 +7,7 @@ using Blog.Data.Entities;
 using Blog.Data.Repositories;
 using Blog.Data.Dto;
 using System.Net.Http;
+using Blog.Data.DataSource;
 
 namespace Blog.Api.Controllers
 {
@@ -14,12 +15,14 @@ namespace Blog.Api.Controllers
     [RoutePrefix("Blog/Post")]
     public class PostController : ApiController
     {
+        readonly private BlogContext context = new BlogContext();
+        
         [Route("GetAll"), HttpGet, AllowAnonymous]
         public ICollection<PostModelGetAllPosts> GetAllPosts()
         {
             try
             {
-                var PostRepository = new PostRepository();
+                var PostRepository = new PostRepository(context);
 
                 var PostModelGetList = new List<PostModelGetAllPosts>();
 
@@ -62,7 +65,7 @@ namespace Blog.Api.Controllers
                         Tags = model.Tags
                     };
 
-                    var PostRepository = new PostRepository();
+                    var PostRepository = new PostRepository(context);
 
                     PostRepository.InsertPost(Post);
 
@@ -84,7 +87,7 @@ namespace Blog.Api.Controllers
         {
             try
             {
-                var PostRepository = new PostRepository();
+                var PostRepository = new PostRepository(context);
 
                 PostRepository.DeletePost(postId);
 

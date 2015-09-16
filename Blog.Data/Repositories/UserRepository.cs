@@ -6,11 +6,18 @@ namespace Blog.Data.Repositories
 {
     public class UserRepository : RepositoryBase<User>
     {
+        private BlogContext blogContext { get; set; }
+
+        public UserRepository(BlogContext context)
+        {
+            blogContext = context;
+        }
+
         public User Authenticate(string Login, string Password)
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
-                return Context.User.Include("Perfil").FirstOrDefault(u => u.Login.Equals(Login) & u.Password.Equals(Password));
+                return blogContext.User.Include("Perfil").FirstOrDefault(u => u.Login.Equals(Login) & u.Password.Equals(Password));
             }
         }
     }

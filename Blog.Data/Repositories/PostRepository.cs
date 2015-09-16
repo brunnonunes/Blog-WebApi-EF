@@ -10,12 +10,19 @@ namespace Blog.Data.Repositories
 {
     public class PostRepository : RepositoryBase<Post>
     {
+        private BlogContext blogContext { get; set; }
+
+        public PostRepository(BlogContext context)
+        {
+            blogContext = context;
+        }
+        
         // Método que retorna todos os posts e suas respectivas tags.
         public List<PostDto> GetAllPosts()
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
-                var Query = Context.Post.ToList().OrderByDescending(p => p.CreationDate);
+                var Query = blogContext.Post.ToList().OrderByDescending(p => p.CreationDate);
 
                 var PostDtoList = new List<PostDto>();
 
@@ -56,13 +63,13 @@ namespace Blog.Data.Repositories
         // Método que insere o novo post na base juntamente com sua coleção de tags.
         public void InsertPost(Post post)
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
                 var ListTag = new List<Tag>();
 
                 foreach (Tag t in post.Tags)
                 {
-                    ListTag.Add(Context.Tag.FirstOrDefault(tag => tag.Id == t.Id));
+                    ListTag.Add(blogContext.Tag.FirstOrDefault(tag => tag.Id == t.Id));
                 };
 
                 var Post = new Post
@@ -74,21 +81,21 @@ namespace Blog.Data.Repositories
                     Tags = ListTag
                 };
 
-                Context.Entry(Post).State = EntityState.Added;
-                Context.SaveChanges();
+                blogContext.Entry(Post).State = EntityState.Added;
+                blogContext.SaveChanges();
             }
         }
 
         public void DeletePost(int postId)
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
                 var Post = new Post();
-                
-                Post = Context.Post.Include("Tags").FirstOrDefault(p => p.Id == postId);
-                
-                Context.Entry(Post).State = EntityState.Deleted;
-                Context.SaveChanges();               
+
+                Post = blogContext.Post.Include("Tags").FirstOrDefault(p => p.Id == postId);
+
+                blogContext.Entry(Post).State = EntityState.Deleted;
+                blogContext.SaveChanges();
             }
         }
     }

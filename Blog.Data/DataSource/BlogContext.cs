@@ -5,7 +5,7 @@ using Blog.Data.Entities;
 
 namespace Blog.Data.DataSource
 {
-    class BlogContext : DbContext
+    public class BlogContext : DbContext
     {
         public BlogContext()
             : base(ConfigurationManager.ConnectionStrings["BlogDB"].ConnectionString)

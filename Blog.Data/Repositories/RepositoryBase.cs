@@ -9,46 +9,55 @@ namespace Blog.Data.Repositories
     public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         where TEntity : class
     {
+        private BlogContext blogContext { get; set; }
+
+        public RepositoryBase(BlogContext context)
+        {
+            blogContext = context;
+        }
+
+        public RepositoryBase() { }
+
         public void Insert(TEntity obj)
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
-                Context.Entry(obj).State = EntityState.Added;
-                Context.SaveChanges();
+                blogContext.Entry(obj).State = EntityState.Added;
+                blogContext.SaveChanges();
             }
         }
 
         public void Delete(TEntity obj)
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
-                Context.Entry(obj).State = EntityState.Deleted;
-                Context.SaveChanges();
+                blogContext.Entry(obj).State = EntityState.Deleted;
+                blogContext.SaveChanges();
             }
-        }           
+        }
 
         public void Update(TEntity obj)
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
-                Context.Entry(obj).State = EntityState.Modified;
-                Context.SaveChanges();
+                blogContext.Entry(obj).State = EntityState.Modified;
+                blogContext.SaveChanges();
             }
         }
 
         public ICollection<TEntity> GetAll()
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
-                return Context.Set<TEntity>().ToList();
+                return blogContext.Set<TEntity>().ToList();
             }
         }
 
         public TEntity GetById(int id)
         {
-            using (var Context = new BlogContext())
+            using (blogContext)
             {
-                return Context.Set<TEntity>().Find(id);
+                return blogContext.Set<TEntity>().Find(id);
             }
         }
 

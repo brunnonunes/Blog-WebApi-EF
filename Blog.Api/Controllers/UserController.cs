@@ -1,4 +1,5 @@
 ﻿using Blog.Api.Models;
+using Blog.Data.DataSource;
 using Blog.Data.Repositories;
 using System.Web.Http;
 using System.Web.Security;
@@ -9,6 +10,8 @@ namespace Blog.Api.Controllers
     [RoutePrefix("Blog/User")]
     public class UserController : ApiController
     {
+        readonly private BlogContext context = new BlogContext();
+
         [Route("Login"), HttpGet, AllowAnonymous]
         public UserModelLogin Login([FromUri]UserModelLogin model)
         {
@@ -18,9 +21,11 @@ namespace Blog.Api.Controllers
             {
                 try
                 {
-                    var UserRepository = new UserRepository();
+                    var UserRepository = new UserRepository(context);
 
-                    //var User = UserRepository.Authenticate(model.Login, Cryptography.GetMD5Hash(model.Password));
+                    // Criptografia...
+                    // var User = UserRepository.Authenticate(model.Login, Cryptography.GetMD5Hash(model.Password));
+
                     var User = UserRepository.Authenticate(model.Login, model.Password);
                                        
                     if (User != null)

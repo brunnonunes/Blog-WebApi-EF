@@ -21,8 +21,7 @@ namespace Blog.Data.Entities
         public int PerfilId { get; set; }
 
         [ForeignKey("PerfilId")]
-        public virtual Perfil Perfil { get; set; }
-        
+        public virtual Perfil Perfil { get; set; }        
     }
 
 }
