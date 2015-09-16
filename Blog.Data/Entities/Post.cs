@@ -11,10 +11,10 @@ namespace Blog.Data.Entities
         public int Id { get; set; }
 
         [Required]
-        [StringLength(250)]
+        [StringLength(500)]
         public string Title { get; set; }
 
-        [StringLength(1000)]
+        [StringLength(5000)]
         public string Content { get; set; }
 
         [Required]

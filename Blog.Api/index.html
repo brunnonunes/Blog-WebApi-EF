@@ -55,8 +55,24 @@
             margin-right: auto;
             margin-top: -31px;
         }
+
+        #ButtonDeletePost {
+            padding: 0;
+            height: 25px;
+            width: 25px;
+            opacity: 0.8;
+        }
+
+        #SpanTag {
+            font-family: calibri;
+            font-size: 12px;
+            font-weight: normal;
+            color: gray;
+            background: lightgray;
+        }
     </style>
 
+    <script src="Scripts/jquery-1.9.0.js"></script>
     <script src="Scripts/angular.js"></script>
 
     <script>
@@ -73,7 +89,6 @@
             $scope.HideGetFailMessageLabel = true;
             $scope.HideFormNewPost = true;
             $scope.HideDivExcluirPost = true;
-
 
             // Buscando todos os posts gravados.
             $http.get("http://localhost:41393/blog/post/getall")
@@ -101,15 +116,14 @@
                 function (data) {
 
                     if (data.Login != null) {
-                        $scope.userdata = data
-                        alert(data.LoginStatusMessage);
+                        $scope.userdata = data;
 
                         // Armazenando Id do usuário ativo.
                         USER_ID = data.Id;
 
                         // Verificando Perfil: 1 = Admin, 2 = Público.
                         if (data.PerfilId == 1) {
-                            
+
                             // Funcionalidade de exclusão de posts.
                             $scope.HideDivExcluirPost = false;
                         }
@@ -125,9 +139,12 @@
                         $scope.HideGetFailMessageLabel = true;
 
                         $scope.HideTableLogin = true;
+
+                        alert(data.LoginStatusMessage);
+
                     }
                     else {
-                        $scope.userdata = data
+                        $scope.userdata = data;
                         $scope.loginClear();
 
                         $scope.HideLoginLabel = true;
@@ -154,21 +171,46 @@
                 $scope.Model.Password = '';
             }
 
-
             // Criando um objeto JSON para fazer o envio dos dados do post.
             $scope.Model = {
-                Title: '', Content: '', UserId: ''
+                Title: '',
+                Content: '',
+                UserId: '',
+                Tags: []
             };
 
+            // Variável para armazenar as tags selecionadas.
+            var TAGS = [];
+            
             // Gravando um novo post.
             $scope.post = function () {
 
-                $scope.Model.UserId = USER_ID
+                // Identificando as tags selecionadas.
+                var result = $('input[type="checkbox"]:checked');
+
+                if (result.length > 0) {
+
+                    result.each(function () {
+                        
+                        var id = $(this).val();
+
+                        var item = {};
+                        item["id"] = id;
+
+                        TAGS.push(item);
+
+                    });
+
+                }
+
+
+                $scope.Model.UserId = USER_ID;
+                $scope.Model.Tags = TAGS;
 
                 $http.post("http://localhost:41393/blog/post/Insert", $scope.Model)
                 .success(
                 function (msg) {
-                    alert(msg);
+
                     $scope.postClear();
 
                     // Buscando todos os posts gravados.
@@ -183,6 +225,9 @@
                             $scope.mensagem = e;
                         }
                         );
+
+                    alert(msg);
+
                 }
                 )
                 .error(
@@ -204,7 +249,6 @@
                 $http.get("http://localhost:41393/blog/post/Delete?PostId=" + post.Id)
                 .success(
                 function (msg) {
-                    alert(msg);
 
                     // Buscando todos os posts gravados.
                     $http.get("http://localhost:41393/blog/post/getall")
@@ -218,6 +262,9 @@
                             $scope.mensagem = e;
                         }
                         );
+
+                    alert(msg);
+
                 }
                 )
                 .error(
@@ -236,7 +283,7 @@
 <body ng-controller="blogController">
 
     <div class="jumbotron">
-        <h1>Blog</h1>
+        <h2>News Blog</h2>
     </div>
 
     <nav class="navbar" id="nav-login">
@@ -259,7 +306,6 @@
                                     <input placeholder="Password" class="form-control" type="password" ng-model="Model.Password">
                                 </div>
 
-                                <!--<input type="button" class="btn btn-primary" ng-click="login()" value="Entrar" />-->
                                 <button type="submit" class="btn btn-primary" ng-click="login()">Entrar</button>
                             </form>
                         </div>
@@ -287,51 +333,102 @@
         <form role="form">
 
             <div class="form-group">
-                <label for="Título">Título</label>
+                <label>Título</label>
                 <input type="text" class="form-control" ng-model="Model.Title" />
             </div>
 
             <div class="form-group">
-                <label for="Conteúdo">Conteúdo</label>
-                <input type="text" class="form-control" ng-model="Model.Content" />
+                <label>Conteúdo</label>
+                <textarea class="form-control" rows="3" ng-model="Model.Content"></textarea>
             </div>
 
+            <div class="form-group">
+
+                <label>Tags</label>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" value="1">Beleza</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="2">Ciência</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="3">Cultura</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="4">Economia</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="5">Esporte</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="6">Lazer</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="7">Política</label>
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="8">Tecnologia</label>
+                </div>
+
+            </div>
+
+            <br />
+            
             <button type="submit" class="btn btn-primary" ng-click="post()">Postar</button>
 
         </form>
 
     </div>
 
-    <div class="row container">
+    <div class="container">
+
         <div class="col-md-12">
+
             <table class="table table-striped">
                 <thead>
                 </thead>
                 <tbody>
+
                     <tr ng-repeat="post in posts">
+
                         <td>
 
-                            <div class="col-md-11">
-                                <p class="form-inline">Por {{post.UserLogin}} às {{post.CreationDate | date : 'H:mm'}} em {{post.CreationDate | date : 'dd/MM/yy'}}</p>
-                            </div>
+                            <div class="row">
 
-                            <div class="col-md-1" ng-hide="HideDivExcluirPost">
-                                <button type="submit" class="btn btn-danger" ng-click="delete(post)">
-                                    <span class="glyphicon glyphicon-remove" />
-                                </button>
-                            </div>
+                                <div class="col-md-11">
+                                    <p class="form-inline">Por {{post.UserLogin}} às {{post.CreationDate | date : 'H:mm'}} em {{post.CreationDate | date : 'dd/MM/yy'}}</p>
+                                </div>
 
-                            <div class="col-md-11">
-                                <h4><strong>{{post.Title}}</strong></h4>
-
-                                <h5>{{post.Content}}</h5>
-                            </div>
-
-                            <div>
+                                <div class="col-md-1" ng-hide="HideDivExcluirPost">
+                                    <button id="ButtonDeletePost" type="submit" class="btn btn-danger" ng-click="delete(post)">
+                                        <span class="glyphicon glyphicon-remove" />
+                                    </button>
+                                </div>
 
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4><strong>{{post.Title}}</strong></h4>
+
+                                    <h5>{{post.Content}}</h5>
+                                </div>
+                            </div>
+
+                            <div class="row col-md-12">
+                                <br />
+                                <div ng-repeat="tag in post.Tags">
+                                    <div style="float: left; margin-left: 3px">
+                                        <span id="SpanTag" class="badge">{{tag.Description}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </td>
+
                     </tr>
+
                 </tbody>
             </table>
         </div>

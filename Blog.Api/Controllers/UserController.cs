@@ -1,5 +1,4 @@
 ﻿using Blog.Api.Models;
-using Blog.Api.Utility;
 using Blog.Data.Repositories;
 using System.Web.Http;
 using System.Web.Security;

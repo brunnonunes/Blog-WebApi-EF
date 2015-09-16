@@ -15,11 +15,11 @@ namespace Blog.Data.Repositories
         {
             using (var Context = new BlogContext())
             {
-                var query = Context.Post.ToList().OrderByDescending(p => p.CreationDate);
+                var Query = Context.Post.ToList().OrderByDescending(p => p.CreationDate);
 
                 var PostDtoList = new List<PostDto>();
 
-                foreach (Post p in query)
+                foreach (Post p in Query)
                 {
                     var TagList = new List<Tag>();
 

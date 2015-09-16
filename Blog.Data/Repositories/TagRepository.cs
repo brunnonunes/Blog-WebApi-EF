@@ -1,5 +1,4 @@
-﻿
-using Blog.Data.Entities;
+﻿using Blog.Data.Entities;
 
 namespace Blog.Data.Repositories
 {

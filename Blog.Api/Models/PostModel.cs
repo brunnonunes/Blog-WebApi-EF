@@ -1,7 +1,6 @@
 ﻿using Blog.Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Api.Models
 {
@@ -25,5 +24,6 @@ namespace Blog.Api.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public int UserId { get; set; }
+        public ICollection<Tag> Tags { get; set; }
     }
 }

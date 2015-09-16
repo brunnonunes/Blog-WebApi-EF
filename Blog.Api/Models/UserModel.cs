@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Blog.Api.Models
+﻿namespace Blog.Api.Models
 {
     // Envia os dados para a camada de dados para realizar a autenticação 
     // do usuário e devolve os dados do usuário logado para o cliente.

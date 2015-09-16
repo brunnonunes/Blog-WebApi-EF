@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
-using System.Web.Services.Description;
 using Blog.Api.Models;
 using Blog.Data.Entities;
 using Blog.Data.Repositories;
@@ -55,21 +54,13 @@ namespace Blog.Api.Controllers
             {
                 if (ModelState.IsValid && model != null)
                 {
-                    // Inserindo Tags...
-                    var TagList = new List<Tag>();
-                                        
-                    //var NovaTag = new Tag
-                    //{
-                    //    Id = 2
-                    //};
-                    //TagList.Add(NovaTag);
-
-                    var Post = new Post();
-
-                    Post.Title = model.Title;
-                    Post.Content = model.Content;
-                    Post.UserId = model.UserId;
-                    Post.Tags = TagList;
+                    var Post = new Post
+                    {
+                        Title = model.Title,
+                        Content = model.Content,
+                        UserId = model.UserId,
+                        Tags = model.Tags
+                    };
 
                     var PostRepository = new PostRepository();
 
@@ -86,16 +77,16 @@ namespace Blog.Api.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.Forbidden, "Erro " + e.Message);
             }
-        }               
-        
+        }
+
         [Route("Delete"), HttpGet]
-        public HttpResponseMessage Delete(int PostId)
+        public HttpResponseMessage Delete(int postId)
         {
             try
             {
-                var PostRepository = new PostRepository();                            
+                var PostRepository = new PostRepository();
 
-                PostRepository.DeletePost(PostId);
+                PostRepository.DeletePost(postId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, "Post excluído com sucesso.");
             }
