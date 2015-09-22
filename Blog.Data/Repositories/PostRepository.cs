@@ -90,9 +90,7 @@ namespace Blog.Data.Repositories
         {
             using (blogContext)
             {
-                var Post = new Post();
-
-                Post = blogContext.Post.Include("Tags").FirstOrDefault(p => p.Id == postId);
+                var Post = blogContext.Post.Include("Tags").FirstOrDefault(p => p.Id == postId);
 
                 blogContext.Entry(Post).State = EntityState.Deleted;
                 blogContext.SaveChanges();
