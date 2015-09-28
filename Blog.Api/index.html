@@ -211,7 +211,7 @@
                 $scope.Model.UserId = USER_ID;
                 $scope.Model.Tags = TAGS;
 
-                $http.post(CONNECTION + "blog/post/Insert", $scope.Model)
+                $http.post(URL + "blog/post/Insert", $scope.Model)
                 .success(
                 function (msg) {
 
