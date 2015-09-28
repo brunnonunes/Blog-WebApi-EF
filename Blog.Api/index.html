@@ -78,6 +78,12 @@
     <script>
         angular.module("blog", []);
         angular.module("blog").controller("blogController", function ($scope, $http) {
+                        
+            // Conexão Local.
+            //var URL = "http://localhost:41393/"
+
+            // Conexão Azure.
+            var URL = "http://bnunes-blogwebapi.azurewebsites.net/"
 
             // Variável para armazenar o Id do usuário ativo.
             var USER_ID = '';
@@ -90,7 +96,7 @@
             $scope.HideDivExcluirPost = true;
 
             // Buscando todos os posts gravados.
-            $http.get("http://localhost:41393/blog/post/getall")
+            $http.get(URL + "blog/post/getall")
                 .success(
                 function (data) {
                     $scope.posts = data;
@@ -110,7 +116,7 @@
 
             // Efetuando o login do usuário.
             $scope.login = function () {
-                $http.get("http://localhost:41393/blog/user/login?login=" + $scope.Model.Login + "&password=" + $scope.Model.Password)
+                $http.get(URL + "blog/user/login?login=" + $scope.Model.Login + "&password=" + $scope.Model.Password)
                 .success(
                 function (data) {
 
@@ -205,14 +211,14 @@
                 $scope.Model.UserId = USER_ID;
                 $scope.Model.Tags = TAGS;
 
-                $http.post("http://localhost:41393/blog/post/Insert", $scope.Model)
+                $http.post(CONNECTION + "blog/post/Insert", $scope.Model)
                 .success(
                 function (msg) {
 
                     $scope.postClear();
 
                     // Buscando todos os posts gravados.
-                    $http.get("http://localhost:41393/blog/post/getall")
+                    $http.get(URL + "blog/post/getall")
                         .success(
                         function (data) {
                             $scope.posts = data;
@@ -244,12 +250,12 @@
 
             // Excluindo um post.
             $scope.delete = function (post) {
-                $http.get("http://localhost:41393/blog/post/Delete?PostId=" + post.Id)
+                $http.get(URL + "blog/post/Delete?PostId=" + post.Id)
                 .success(
                 function (msg) {
 
                     // Buscando todos os posts gravados.
-                    $http.get("http://localhost:41393/blog/post/getall")
+                    $http.get(URL + "blog/post/getall")
                         .success(
                         function (data) {
                             $scope.posts = data;
