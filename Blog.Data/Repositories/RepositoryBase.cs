@@ -6,7 +6,7 @@ using Blog.Data.Interfaces;
 
 namespace Blog.Data.Repositories
 {
-    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
+    public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity>
         where TEntity : class
     {
         private BlogContext blogContext { get; set; }
